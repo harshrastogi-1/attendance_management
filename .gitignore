@@ -1,2 +1,2 @@
 build/app/intermediates/assets/debug/flutter_assets/assets/credentials.json
-.env
+assets/.env

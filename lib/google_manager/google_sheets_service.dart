@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:googleapis/sheets/v4.dart' as sheets;
 import 'package:googleapis_auth/auth_io.dart';
 import 'package:googleapis_auth/googleapis_auth.dart' as auth;
@@ -25,9 +25,9 @@ class GoogleSheetsService {
 
   Future<void> _initialize() async {
     try {
-      // final credentialsJson =
-      //     await rootBundle.loadString('assets/credentials.json');
-      final credentialsMap = jsonDecode(credentialsJson);
+      String? credentialsJson = dotenv.env['GOOGLE_CLOUD_CREDENTIALS'];
+
+      final credentialsMap = jsonDecode(credentialsJson!);
 
       final credentials =
           auth.ServiceAccountCredentials.fromJson(credentialsMap);
@@ -63,14 +63,13 @@ class GoogleSheetsService {
         throw Exception("Invalid row index: $rowIndex");
       }
 
-      int checkInEpoch = int.parse(rowData[3]); // Check-in (Epoch)
-      int checkOutEpoch = int.parse(rowData[4]); // Check-out (Epoch)
+      int checkInEpoch = int.parse(rowData[3]);
+      int checkOutEpoch = int.parse(rowData[4]);
 
       int overtimeHours = Utils.calculateOvertime(checkInEpoch, checkOutEpoch);
-      rowData[5] = overtimeHours.toString(); // Update overtime field
+      rowData[5] = overtimeHours.toString();
 
-      final valueRange = sheets.ValueRange(
-          values: [rowData]); // Only updating the specific row
+      final valueRange = sheets.ValueRange(values: [rowData]);
 
       await _sheetsApi!.spreadsheets.values.update(
           valueRange, _spreadsheetId, sheetName,
@@ -118,9 +117,9 @@ class GoogleSheetsService {
           sheets.Request(
             deleteDimension: sheets.DeleteDimensionRequest(
               range: sheets.DimensionRange(
-                sheetId: 0, // Change if you have multiple sheets
+                sheetId: 0,
                 dimension: "ROWS",
-                startIndex: rowIndex, // 0-based index
+                startIndex: rowIndex,
                 endIndex: rowIndex + 1,
               ),
             ),

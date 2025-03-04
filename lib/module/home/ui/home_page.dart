@@ -18,6 +18,12 @@ class _MyHomePageState extends State<MyHomePage> {
   final HomeCubit _homeCubit = GetIt.I<HomeCubit>();
 
   @override
+  void initState() {
+    // _homeCubit.fetchAttendance();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

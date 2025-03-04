@@ -12,7 +12,9 @@ class HomeCubit extends Cubit<HomeState> {
   final HomeUseCase _homeUseCase;
 
   HomeCubit(this._homeUseCase)
-      : super(HomeState(status: Status.initialLoading));
+      : super(HomeState(status: Status.initialLoading)) {
+    fetchAttendance();
+  }
 
   Future<void> fetchAttendance([String? selectedDate]) async {
     try {
