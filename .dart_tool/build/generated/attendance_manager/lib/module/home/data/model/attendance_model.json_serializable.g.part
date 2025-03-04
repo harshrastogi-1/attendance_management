@@ -1,0 +1,24 @@
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+Attendance _$AttendanceFromJson(Map<String, dynamic> json) => Attendance(
+      employeeId: json['employeeId'] as String,
+      name: json['name'] as String,
+      date: json['date'] as String,
+      checkIn: json['checkIn'] as String,
+      checkOut: json['checkOut'] as String,
+      overtimeHours: (json['overtimeHours'] as num).toInt(),
+      status: json['status'] as String,
+    );
+
+Map<String, dynamic> _$AttendanceToJson(Attendance instance) =>
+    <String, dynamic>{
+      'employeeId': instance.employeeId,
+      'name': instance.name,
+      'date': instance.date,
+      'checkIn': instance.checkIn,
+      'checkOut': instance.checkOut,
+      'overtimeHours': instance.overtimeHours,
+      'status': instance.status,
+    };
